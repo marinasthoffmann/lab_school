@@ -1,5 +1,6 @@
 package tech.devinhouse;
 
+import tech.devinhouse.cli.Cores;
 import tech.devinhouse.cli.Display;
 import tech.devinhouse.exception.OpcaoInvalidaException;
 import tech.devinhouse.models.Aluno;
@@ -19,7 +20,10 @@ public class Aplicacao {
                 operacao = display.solicitarOperacao();
                 processar(operacao);
             } catch (OpcaoInvalidaException e) {
-                display.exibirMensagem("Opção informada é inválida!");
+                display.exibirMensagem("Opção informada é inválida!", Cores.RED);
+                System.out.println();
+            } finally {
+                display.solicitarTecla();
             }
         }
     }
