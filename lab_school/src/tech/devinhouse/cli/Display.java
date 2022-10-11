@@ -1,4 +1,9 @@
-package cli;
+package tech.devinhouse.cli;
+
+import tech.devinhouse.exception.OpcaoInvalidaException;
+import tech.devinhouse.models.enums.Operacao;
+
+import java.util.Scanner;
 
 public class Display {
     private static final String ANSI_BLUE = "\u001B[34m";
@@ -20,9 +25,22 @@ public class Display {
         System.out.println("   [4] - Atualizar situação de matrícula do aluno");
         System.out.println("   [5] - Realizar atendimento pedagógico");
         System.out.println("   [6] - Imprimir relatório");
+        System.out.println("   [7] - Encerrar");
+    }
+
+    public Operacao solicitarOperacao() throws OpcaoInvalidaException {
+        Scanner scanner = new Scanner(System.in);
         System.out.print("\n Digite o número referente à opção desejada:");
+        int codigoOperacao = scanner.nextInt();
 
+        if (codigoOperacao <= 0 || codigoOperacao > Operacao.values().length){
+            throw new OpcaoInvalidaException();
+        }
 
+        return Operacao.obterPeloCodigo(codigoOperacao);
+    }
 
+    public void exibirMensagem(String mensagem) {
+        System.out.println(mensagem);
     }
 }
