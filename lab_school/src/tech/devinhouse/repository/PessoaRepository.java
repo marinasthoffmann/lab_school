@@ -11,6 +11,7 @@ public class PessoaRepository {
     List<Pessoa> pessoas = new ArrayList<>();
     int numeroSequencialProfessor = 0;
     int numeroSequencialAluno = 0;
+    int numeroSequencialPedagogo = 0;
 
 
     public String gerarCodigoProfessor(){
@@ -21,6 +22,11 @@ public class PessoaRepository {
     public String gerarCodigoAluno() {
         numeroSequencialAluno ++;
         return String.format("AL%05d", numeroSequencialAluno);
+    }
+
+    public String gerarCodigoPedagogo() {
+        numeroSequencialPedagogo ++;
+        return String.format("PE%05d", numeroSequencialPedagogo);
     }
 
     public void inserir(Pessoa pessoa){

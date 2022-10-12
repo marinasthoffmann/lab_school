@@ -54,6 +54,10 @@ public class Aplicacao {
                 repository.consultar();
                 break;
             case CADASTRAR_PEDAGOGO:
+                Pessoa pedagogo = display.solicitarCadastroPedagogo();
+                repository.inserir(pedagogo);
+                display.exibirMensagem("Pedagogo cadastrado com sucesso!", Cores.GREEN);
+                repository.consultar();
                 break;
             case ATUALIZAR_SITUACAO:
                 break;

@@ -154,4 +154,28 @@ public class Display {
         Pessoa aluno = IPessoaFactory.cadastrarAluno(nome, telefone, dataNascimento, cpf, codigo, situacaoMatricula, nota, numeroAtendimentos);
         return aluno;
     }
+
+    public Pessoa solicitarCadastroPedagogo() throws ParseException {
+        Scanner scanner = new Scanner(System.in);
+        exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        String nome = scanner.nextLine();
+
+        exibirMensagem(String.format("Digite o telefone do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        String telefone = scanner.nextLine();
+
+        exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        String dataNascimentoInput = scanner.nextLine();
+        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataNascimento = formatar.parse(dataNascimentoInput);
+
+        exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        String cpf = scanner.nextLine();
+
+        String codigo = repository.gerarCodigoPedagogo();
+
+        int numeroAtendimentos = 0;
+
+        Pessoa pedagogo = IPessoaFactory.cadastrarPedagogo(nome, telefone, dataNascimento, cpf, codigo, numeroAtendimentos);
+        return pedagogo;
+    }
 }
