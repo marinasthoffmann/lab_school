@@ -7,4 +7,8 @@ public enum SituacaoMatricula {
     ATENDIMENTO_PEDAGOGICO,
     INATIVO;
 
+    public static SituacaoMatricula obterPeloCodigo(int codigo) {
+        SituacaoMatricula[] situacaoMatriculas = SituacaoMatricula.values();
+        return situacaoMatriculas[codigo-1];
+    }
 }

@@ -10,11 +10,17 @@ public class PessoaRepository {
 
     List<Pessoa> pessoas = new ArrayList<>();
     int numeroSequencialProfessor = 0;
+    int numeroSequencialAluno = 0;
 
 
     public String gerarCodigoProfessor(){
         numeroSequencialProfessor ++;
         return String.format("PR%05d", numeroSequencialProfessor);
+    }
+
+    public String gerarCodigoAluno() {
+        numeroSequencialAluno ++;
+        return String.format("AL%05d", numeroSequencialAluno);
     }
 
     public void inserir(Pessoa pessoa){

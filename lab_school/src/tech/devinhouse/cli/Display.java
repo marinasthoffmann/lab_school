@@ -3,6 +3,7 @@ package tech.devinhouse.cli;
 import tech.devinhouse.exception.OpcaoInvalidaException;
 import tech.devinhouse.factory.IPessoaFactory;
 import tech.devinhouse.factory.PessoaFactory;
+import tech.devinhouse.models.Aluno;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.Professor;
 import tech.devinhouse.models.enums.*;
@@ -85,28 +86,6 @@ public class Display {
         return opcao == 1;
     }
 
-//    public static void solicitarCadastro(TipoPessoa tipo) throws ParseException {
-//
-//        Scanner scanner = new Scanner(System.in);
-//        exibirMensagem(String.format("Digite o nome do %s: ", tipo), Cores.YELLOW);
-//        String nome = scanner.nextLine();
-//
-//        exibirMensagem(String.format("Digite o telefone do %s: ", tipo), Cores.YELLOW);
-//        String telefone = scanner.nextLine();
-//
-//        exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", tipo), Cores.YELLOW);
-//        String dataNascimentoInput = scanner.nextLine();
-//        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
-//        Date dataNascimento = formatar.parse(dataNascimentoInput);
-//
-//        exibirMensagem(String.format("Digite o cpf do %s: ", tipo), Cores.YELLOW);
-//        String cpf = scanner.nextLine();
-//
-//        if (tipo == TipoPessoa.PROFESSOR){
-//            solicitarCadastroProfessor(nome, telefone, dataNascimento, cpf);
-//        };
-//    }
-
     public Pessoa solicitarCadastroProfessor() throws ParseException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
@@ -144,4 +123,35 @@ public class Display {
         return professor;
     }
 
+    public Pessoa solicitarCadastroAluno() throws ParseException {
+        Scanner scanner = new Scanner(System.in);
+        exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        String nome = scanner.nextLine();
+
+        exibirMensagem(String.format("Digite o telefone do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        String telefone = scanner.nextLine();
+
+        exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", TipoPessoa.ALUNO), Cores.YELLOW);
+        String dataNascimentoInput = scanner.nextLine();
+        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
+        Date dataNascimento = formatar.parse(dataNascimentoInput);
+
+        exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        String cpf = scanner.nextLine();
+
+        String codigo = repository.gerarCodigoAluno();
+
+        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
+        exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
+        int situacaoMatriculaInput = scanner.nextInt();
+        SituacaoMatricula situacaoMatricula = SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
+
+        exibirMensagem(String.format("Digite a nota do processo seletivo do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        Double nota = scanner.nextDouble();
+
+        int numeroAtendimentos = 0;
+
+        Pessoa aluno = IPessoaFactory.cadastrarAluno(nome, telefone, dataNascimento, cpf, codigo, situacaoMatricula, nota, numeroAtendimentos);
+        return aluno;
+    }
 }
