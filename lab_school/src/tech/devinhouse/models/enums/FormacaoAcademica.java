@@ -7,4 +7,8 @@ public enum FormacaoAcademica {
     MESTRADO,
     DOUTORADO;
 
+    public static FormacaoAcademica obterPeloCodigo(int codigo){
+        FormacaoAcademica[] formacoesAcademicas = FormacaoAcademica.values();
+        return formacoesAcademicas[codigo-1];
+    }
 }

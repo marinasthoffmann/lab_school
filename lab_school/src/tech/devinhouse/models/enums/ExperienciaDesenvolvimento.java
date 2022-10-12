@@ -6,4 +6,8 @@ public enum ExperienciaDesenvolvimento {
     BACK_END,
     FULL_STACK;
 
+    public static ExperienciaDesenvolvimento obterPeloCodigo(int codigo){
+        ExperienciaDesenvolvimento[] experienciasDesenvolvimentos = ExperienciaDesenvolvimento.values();
+        return experienciasDesenvolvimentos[codigo-1];
+    }
 }

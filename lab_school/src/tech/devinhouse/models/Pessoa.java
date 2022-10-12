@@ -2,7 +2,7 @@ package tech.devinhouse.models;
 
 import java.util.Date;
 
-public abstract class Pessoa {
+public abstract class Pessoa{
 
     private String nome;
     private String telefone;
@@ -17,6 +17,15 @@ public abstract class Pessoa {
         this.dataDeNascimento = dataDeNascimento;
         this.cpf = cpf;
         this.codigo = codigo;
+    }
+
+    @Override
+    public String toString() {
+        return "Nome = " + nome + '\n' +
+                "Telefone = " + telefone + '\n' +
+                "Data De Nascimento = " + dataDeNascimento + '\n' +
+                "CPF = " + cpf + '\n' +
+                "Código = " + codigo + '\n';
     }
 
     public String getNome() {
