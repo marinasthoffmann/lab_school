@@ -1,5 +1,7 @@
 package tech.devinhouse.cli;
 
+import tech.devinhouse.exception.DataNascimentoInvalidaException;
+import tech.devinhouse.exception.EntradaNumerosInvalidaException;
 import tech.devinhouse.exception.OpcaoInvalidaException;
 import tech.devinhouse.factory.IPessoaFactory;
 import tech.devinhouse.factory.PessoaFactory;
@@ -8,9 +10,11 @@ import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.Professor;
 import tech.devinhouse.models.enums.*;
 import tech.devinhouse.repository.PessoaRepository;
+import tech.devinhouse.utils.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
@@ -58,10 +62,19 @@ public class Display {
 
         return Operacao.obterPeloCodigo(codigoOperacao);
     }
+    private static int verificarInput(int input ,int limite) throws OpcaoInvalidaException {
+        int resposta = Utils.tryParseInt(String.valueOf(input));
 
-    public void exibirMensagem(String mensagem, String cor) {
+        if (resposta == 0 || input > limite || input <= 0)
+            throw new OpcaoInvalidaException();
+
+        return input;
+    }
+
+    public static void exibirMensagem(String mensagem, String cor) {
         System.out.print("\n" + cor + mensagem + Cores.RESET);
     }
+
     public void exibirMensagemOpcoes(String mensagem, List<String> opcoes) {
         System.out.print("\n" + Cores.YELLOW + mensagem + "\n");
         int numeroOpcao = 1;
@@ -86,96 +99,103 @@ public class Display {
         return opcao == 1;
     }
 
-    public Pessoa solicitarCadastroProfessor() throws ParseException {
+    public Pessoa solicitarCadastroProfessor() throws ParseException, EntradaNumerosInvalidaException,
+            DataNascimentoInvalidaException, OpcaoInvalidaException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String nome = scanner.nextLine();
 
-        exibirMensagem(String.format("Digite o telefone do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o telefone do %s (somente números) : ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String telefone = scanner.nextLine();
+        if (Utils.tryParseLong(telefone) == 0) throw new EntradaNumerosInvalidaException("telefone");
 
         exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String dataNascimentoInput = scanner.nextLine();
-        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataNascimento = formatar.parse(dataNascimentoInput);
+        Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
         exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String [] formacoesAcademicas = {"Graduação incompleta", "Graduação completa", "Mestrado", "Doutorado"};
         exibirMensagemOpcoes("Digite a formação acadêmica: ", List.of(formacoesAcademicas));
         int formacaoAcademicaInput = scanner.nextInt();
+        verificarInput(formacaoAcademicaInput, formacoesAcademicas.length);
         FormacaoAcademica formacaoAcademica = FormacaoAcademica.obterPeloCodigo(formacaoAcademicaInput);
 
         String [] experienciasDesenvolvimento = {"Front-end", "Back-end", "Full-stack"};
         exibirMensagemOpcoes("Digite a experiência de desenvolvimento: ", List.of(experienciasDesenvolvimento));
         int experienciaDesenvolvimentoInput = scanner.nextInt();
+        verificarInput(experienciaDesenvolvimentoInput, experienciasDesenvolvimento.length);
         ExperienciaDesenvolvimento experienciaDesenvolvimento = ExperienciaDesenvolvimento.obterPeloCodigo(experienciaDesenvolvimentoInput);
 
         String [] estados = {"Ativo", "Inativo"};
         exibirMensagemOpcoes("Digite o estado do professor: ", List.of(estados));
         int estadosInput = scanner.nextInt();
         EstadoProfessor estadoProfessor = EstadoProfessor.obterPeloCodigo(estadosInput);
+        verificarInput(estadosInput, estados.length);
 
         String codigo = repository.gerarCodigoProfessor();
 
-        Pessoa professor = IPessoaFactory.cadastrarProfessor(nome, telefone, dataNascimento, cpf, codigo, formacaoAcademica, experienciaDesenvolvimento, estadoProfessor);
-        return professor;
+        return IPessoaFactory.cadastrarProfessor(nome, telefone, dataNascimento, cpf, codigo, formacaoAcademica, experienciaDesenvolvimento, estadoProfessor);
     }
 
-    public Pessoa solicitarCadastroAluno() throws ParseException {
+    public Pessoa solicitarCadastroAluno() throws ParseException, EntradaNumerosInvalidaException,
+            DataNascimentoInvalidaException, OpcaoInvalidaException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
         String nome = scanner.nextLine();
 
-        exibirMensagem(String.format("Digite o telefone do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o telefone do %s (somente números) : ", TipoPessoa.ALUNO), Cores.YELLOW);
         String telefone = scanner.nextLine();
+        if (Utils.tryParseLong(telefone) == 0) throw new EntradaNumerosInvalidaException("telefone");
 
         exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", TipoPessoa.ALUNO), Cores.YELLOW);
         String dataNascimentoInput = scanner.nextLine();
-        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataNascimento = formatar.parse(dataNascimentoInput);
+        Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
         exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String codigo = repository.gerarCodigoAluno();
 
         String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
         exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
         int situacaoMatriculaInput = scanner.nextInt();
+        verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
         SituacaoMatricula situacaoMatricula = SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
 
         exibirMensagem(String.format("Digite a nota do processo seletivo do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
         Double nota = scanner.nextDouble();
+        if (Utils.tryParseDouble(nota) == 0) throw new EntradaNumerosInvalidaException(cpf);
 
         int numeroAtendimentos = 0;
 
-        Pessoa aluno = IPessoaFactory.cadastrarAluno(nome, telefone, dataNascimento, cpf, codigo, situacaoMatricula, nota, numeroAtendimentos);
-        return aluno;
+        return IPessoaFactory.cadastrarAluno(nome, telefone, dataNascimento, cpf, codigo, situacaoMatricula, nota, numeroAtendimentos);
     }
 
-    public Pessoa solicitarCadastroPedagogo() throws ParseException {
+    public Pessoa solicitarCadastroPedagogo() throws ParseException, EntradaNumerosInvalidaException, DataNascimentoInvalidaException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String nome = scanner.nextLine();
 
-        exibirMensagem(String.format("Digite o telefone do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o telefone do %s (somente números): ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String telefone = scanner.nextLine();
+        if (Utils.tryParseLong(telefone) == 0) throw new EntradaNumerosInvalidaException("telefone");
 
         exibirMensagem(String.format("Digite a data de nascimento do %s (dd/MM/yyyy): ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String dataNascimentoInput = scanner.nextLine();
-        SimpleDateFormat formatar = new SimpleDateFormat("dd/MM/yyyy");
-        Date dataNascimento = formatar.parse(dataNascimentoInput);
+        Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
         exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String codigo = repository.gerarCodigoPedagogo();
 
         int numeroAtendimentos = 0;
 
-        Pessoa pedagogo = IPessoaFactory.cadastrarPedagogo(nome, telefone, dataNascimento, cpf, codigo, numeroAtendimentos);
-        return pedagogo;
+        return IPessoaFactory.cadastrarPedagogo(nome, telefone, dataNascimento, cpf, codigo, numeroAtendimentos);
     }
 }
