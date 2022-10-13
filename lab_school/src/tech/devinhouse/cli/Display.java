@@ -8,6 +8,7 @@ import tech.devinhouse.factory.IPessoaFactory;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.enums.*;
 import tech.devinhouse.repository.PessoaRepository;
+import tech.devinhouse.service.enums.Relatorio;
 import tech.devinhouse.utils.Utils;
 
 import java.text.ParseException;
@@ -223,5 +224,31 @@ public class Display {
         verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
 
         return SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
+    }
+
+    public Relatorio solicitarTipoRelatorio() throws OpcaoInvalidaException {
+
+        Scanner scanner = new Scanner(System.in);
+        String [] opcoesRelatorios = {"Listagem de pessoas", "Relatório de Alunos", "Relatório de Professores",
+                "Relatório de Alunos com mais atendimentos pedagógicos", "Pedagogos com mais atendimentos pedagógicos"};
+        exibirMensagemOpcoes("Digite a opção equivalente ao relatório desejado: ", List.of(opcoesRelatorios));
+        int codigoRelatorio = scanner.nextInt();
+
+        if (codigoRelatorio <= 0 || codigoRelatorio > Relatorio.values().length){
+            throw new OpcaoInvalidaException();
+        }
+        return Relatorio.obterPeloCodigo(codigoRelatorio);
+    }
+
+    public TipoPessoa solicitarCategoriaPessoas() throws OpcaoInvalidaException {
+        Scanner scanner = new Scanner(System.in);
+        String [] categorias = {"Professores", "Alunos", "Pedagogos", "Todos"};
+        exibirMensagemOpcoes("Digite a categoria de pessoas da listagem: ", List.of(categorias));
+        int categoria = scanner.nextInt();
+
+        if (categoria <= 0 || categoria > TipoPessoa.values().length){
+            throw new OpcaoInvalidaException();
+        }
+        return TipoPessoa.obterPeloCodigo(categoria);
     }
 }

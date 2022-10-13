@@ -3,9 +3,13 @@ package tech.devinhouse;
 import tech.devinhouse.cli.Cores;
 import tech.devinhouse.cli.Display;
 import tech.devinhouse.exception.*;
+import tech.devinhouse.models.Aluno;
+import tech.devinhouse.models.Pedagogo;
 import tech.devinhouse.models.Pessoa;
-import tech.devinhouse.models.enums.Operacao;
-import tech.devinhouse.models.enums.SituacaoMatricula;
+import tech.devinhouse.models.Professor;
+import tech.devinhouse.models.enums.*;
+import tech.devinhouse.service.RelatorioService;
+import tech.devinhouse.service.enums.Relatorio;
 import tech.devinhouse.repository.PessoaRepository;
 
 import java.text.ParseException;
@@ -14,7 +18,10 @@ public class Aplicacao {
     private PessoaRepository repository = new PessoaRepository();
     private Display display = new Display(repository);
 
-    public void executar() throws OpcaoInvalidaException {
+    private RelatorioService relatorioService = new RelatorioService();
+
+    public void executar() throws OpcaoInvalidaException, ParseException {
+        repository.popular();
         Operacao operacao = null;
         boolean continua = true;
 
@@ -72,6 +79,24 @@ public class Aplicacao {
                 repository.consultar();
                 break;
             case IMPRIMIR_RELATORIO:
+                Relatorio relatorio = display.solicitarTipoRelatorio();
+                processar(relatorio);
+                break;
+        }
+    }
+    private void processar(Relatorio relatorio) throws OpcaoInvalidaException {
+        switch (relatorio){
+            case LISTAGEM_PESSOAS:
+                TipoPessoa tipo = display.solicitarCategoriaPessoas();
+                relatorioService.exibeListagem(tipo);
+                break;
+            case RELATORIO_ALUNOS:
+                break;
+            case RELATORIO_PROFESSORES:
+                break;
+            case RELATORIO_ALUNOS_MAIS_ATENDIMENTOS_PEDAGOGICOS:
+                break;
+            case RELATORIO_PEDAGOGOS_MAIS_ATENDIMENTOS_PEDAGOGICOS:
                 break;
         }
     }

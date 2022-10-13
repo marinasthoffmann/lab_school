@@ -28,6 +28,10 @@ public abstract class Pessoa{
                 "Código = " + codigo + '\n';
     }
 
+    public String toStringListagem() {
+        return "Código: " + codigo + " | Nome: " + nome + " | CPF: " + cpf;
+    }
+
     public String getNome() {
         return nome;
     }
