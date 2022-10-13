@@ -1,16 +1,11 @@
 package tech.devinhouse.factory;
 
-import tech.devinhouse.exception.DataNascimentoInvalidaException;
-import tech.devinhouse.exception.EntradaNumerosInvalidaException;
 import tech.devinhouse.models.Aluno;
 import tech.devinhouse.models.Pedagogo;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.Professor;
 import tech.devinhouse.models.enums.*;
-import tech.devinhouse.utils.Utils;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 public interface IPessoaFactory {

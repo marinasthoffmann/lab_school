@@ -1,43 +1,36 @@
 package tech.devinhouse.cli;
 
+import tech.devinhouse.exception.CodigoInvalidoException;
 import tech.devinhouse.exception.DataNascimentoInvalidaException;
 import tech.devinhouse.exception.EntradaNumerosInvalidaException;
 import tech.devinhouse.exception.OpcaoInvalidaException;
 import tech.devinhouse.factory.IPessoaFactory;
-import tech.devinhouse.factory.PessoaFactory;
-import tech.devinhouse.models.Aluno;
 import tech.devinhouse.models.Pessoa;
-import tech.devinhouse.models.Professor;
 import tech.devinhouse.models.enums.*;
 import tech.devinhouse.repository.PessoaRepository;
 import tech.devinhouse.utils.Utils;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 public class Display {
-    private static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    private static final String ANSI_RESET = "\u001B[0m";
     private PessoaRepository repository;
     public Display(PessoaRepository repository) {
         this.repository = repository;
     }
 
     public void exibirMenu(){
-        System.out.println(ANSI_BLUE +
+        System.out.println(Cores.BLUE +
                 " __         ______     ______        ______     ______     __  __     ______     ______     __        \n" +
                 "/\\ \\       /\\  __ \\   /\\  == \\      /\\  ___\\   /\\  ___\\   /\\ \\_\\ \\   /\\  __ \\   /\\  __ \\   /\\ \\       \n" +
                 "\\ \\ \\____  \\ \\  __ \\  \\ \\  __<      \\ \\___  \\  \\ \\ \\____  \\ \\  __ \\  \\ \\ \\/\\ \\  \\ \\ \\/\\ \\  \\ \\ \\____  \n" +
                 " \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\     \\/\\_____\\  \\ \\_____\\  \\ \\_\\ \\_\\  \\ \\_____\\  \\ \\_____\\  \\ \\_____\\ \n" +
                 "  \\/_____/   \\/_/\\/_/   \\/_____/      \\/_____/   \\/_____/   \\/_/\\/_/   \\/_____/   \\/_____/   \\/_____/ \n" +
                 "                                                                                                      "
-                + ANSI_RESET);
+                + Cores.RESET);
         System.out.println("=====================================================================================================\n");
         System.out.println("                        ________________________________________________");
         System.out.println("                       | [1] - Cadastrar Professor                      |");
@@ -160,11 +153,7 @@ public class Display {
 
         String codigo = repository.gerarCodigoAluno();
 
-        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
-        exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
-        int situacaoMatriculaInput = scanner.nextInt();
-        verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
-        SituacaoMatricula situacaoMatricula = SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
+        SituacaoMatricula situacaoMatricula = solicitaSituacaoAluno();
 
         exibirMensagem(String.format("Digite a nota do processo seletivo do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
         Double nota = scanner.nextDouble();
@@ -197,5 +186,29 @@ public class Display {
         int numeroAtendimentos = 0;
 
         return IPessoaFactory.cadastrarPedagogo(nome, telefone, dataNascimento, cpf, codigo, numeroAtendimentos);
+    }
+
+    public String solicitarCodigoAluno() throws CodigoInvalidoException {
+        Scanner scanner = new Scanner(System.in);
+        exibirMensagem("Digite o código do aluno: ", Cores.YELLOW);
+        String codigoInput = scanner.nextLine();
+
+        boolean valido = Pattern.matches("AL[0-9]{5}", codigoInput);
+        if (!valido){
+            throw new CodigoInvalidoException();
+        }
+
+        return codigoInput;
+    }
+
+    public SituacaoMatricula solicitaSituacaoAluno() throws OpcaoInvalidaException {
+        Scanner scanner = new Scanner(System.in);
+        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
+        exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
+
+        int situacaoMatriculaInput = scanner.nextInt();
+        verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
+
+        return SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
     }
 }

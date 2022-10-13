@@ -2,15 +2,10 @@ package tech.devinhouse;
 
 import tech.devinhouse.cli.Cores;
 import tech.devinhouse.cli.Display;
-import tech.devinhouse.exception.DataNascimentoInvalidaException;
-import tech.devinhouse.exception.EntradaNumerosInvalidaException;
-import tech.devinhouse.exception.OpcaoInvalidaException;
-import tech.devinhouse.factory.IPessoaFactory;
-import tech.devinhouse.factory.PessoaFactory;
-import tech.devinhouse.models.Aluno;
+import tech.devinhouse.exception.*;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.enums.Operacao;
-import tech.devinhouse.models.enums.TipoPessoa;
+import tech.devinhouse.models.enums.SituacaoMatricula;
 import tech.devinhouse.repository.PessoaRepository;
 
 import java.text.ParseException;
@@ -28,15 +23,11 @@ public class Aplicacao {
             try{
                 operacao = display.solicitarOperacao();
                 processar(operacao);
-            } catch (OpcaoInvalidaException e) {
-                display.exibirMensagem("Opção informada é inválida!\n", Cores.RED);
-                System.out.println();
+            } catch (OpcaoInvalidaException | EntradaNumerosInvalidaException | DataNascimentoInvalidaException |
+                     CodigoInvalidoException | CodigoNaoCadastradoException e) {
+                System.out.println(e.getMessage());
             } catch (ParseException e) {
                 Display.exibirMensagem("Input com formato errado!\n", Cores.RED);
-            } catch (EntradaNumerosInvalidaException e) {
-                System.out.println(e.getMessage());
-            } catch (DataNascimentoInvalidaException e) {
-                System.out.println(e.getMessage());
             } finally {
                 continua = display.solicitarContinuar();
                 if (!continua)
@@ -45,27 +36,33 @@ public class Aplicacao {
         }
     }
 
-    private void processar(Operacao operacao) throws ParseException, EntradaNumerosInvalidaException, DataNascimentoInvalidaException, OpcaoInvalidaException {
+    private void processar(Operacao operacao) throws ParseException, EntradaNumerosInvalidaException,
+            DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException {
         switch (operacao){
             case CADASTRAR_PROFESSOR:
                 Pessoa professor = display.solicitarCadastroProfessor();
                 repository.inserir(professor);
-                display.exibirMensagem("Professor cadastrado com sucesso!", Cores.GREEN);
+                Display.exibirMensagem("Professor cadastrado com sucesso!", Cores.GREEN);
                 repository.consultar();
                 break;
             case CADASTRAR_ALUNO:
                 Pessoa aluno = display.solicitarCadastroAluno();
                 repository.inserir(aluno);
-                display.exibirMensagem("Aluno cadastrado com sucesso!", Cores.GREEN);
+                Display.exibirMensagem("Aluno cadastrado com sucesso!", Cores.GREEN);
                 repository.consultar();
                 break;
             case CADASTRAR_PEDAGOGO:
                 Pessoa pedagogo = display.solicitarCadastroPedagogo();
                 repository.inserir(pedagogo);
-                display.exibirMensagem("Pedagogo cadastrado com sucesso!", Cores.GREEN);
+                Display.exibirMensagem("Pedagogo cadastrado com sucesso!", Cores.GREEN);
                 repository.consultar();
                 break;
             case ATUALIZAR_SITUACAO:
+                String codigo = display.solicitarCodigoAluno();
+                SituacaoMatricula situacaoMatricula= display.solicitaSituacaoAluno();
+                repository.atualizaSituacaoMatricula(codigo, situacaoMatricula);
+                Display.exibirMensagem("Situação da matrícula do aluno atualizada com sucesso!\n", Cores.GREEN);
+                repository.consultar();
                 break;
             case ATENDIMENTO_PEDAGOGICO:
                 break;
