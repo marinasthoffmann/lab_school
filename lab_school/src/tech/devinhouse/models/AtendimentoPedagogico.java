@@ -1,6 +1,9 @@
 package tech.devinhouse.models;
 
+import tech.devinhouse.exception.AlunoJaEmAtendimentoPedagogicoException;
+import tech.devinhouse.exception.CodigoNaoCadastradoException;
+
 public interface AtendimentoPedagogico {
 
-    void realizarAtendimento(Aluno aluno);
+    void realizarAtendimento(String codigoPedagogo, String codigoAluno) throws CodigoNaoCadastradoException, AlunoJaEmAtendimentoPedagogicoException;
 }

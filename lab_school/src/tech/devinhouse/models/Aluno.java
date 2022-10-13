@@ -46,4 +46,8 @@ public class Aluno extends Pessoa{
     public int getNumeroAtendimentos() {
         return numeroAtendimentos;
     }
+
+    public void setNumeroAtendimentos() {
+        this.numeroAtendimentos ++;
+    }
 }

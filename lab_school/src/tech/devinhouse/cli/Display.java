@@ -201,6 +201,19 @@ public class Display {
         return codigoInput;
     }
 
+    public String solicitarCodigoPedagogo() throws CodigoInvalidoException {
+        Scanner scanner = new Scanner(System.in);
+        exibirMensagem("Digite o código do pedagogo: ", Cores.YELLOW);
+        String codigoInput = scanner.nextLine();
+
+        boolean valido = Pattern.matches("PE[0-9]{5}", codigoInput);
+        if (!valido){
+            throw new CodigoInvalidoException();
+        }
+
+        return codigoInput;
+    }
+
     public SituacaoMatricula solicitaSituacaoAluno() throws OpcaoInvalidaException {
         Scanner scanner = new Scanner(System.in);
         String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};

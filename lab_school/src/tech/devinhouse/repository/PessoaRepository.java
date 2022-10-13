@@ -1,8 +1,9 @@
 package tech.devinhouse.repository;
-
-import tech.devinhouse.cli.Display;
+import tech.devinhouse.exception.AlunoJaEmAtendimentoPedagogicoException;
 import tech.devinhouse.exception.CodigoNaoCadastradoException;
 import tech.devinhouse.models.Aluno;
+import tech.devinhouse.models.AtendimentoPedagogico;
+import tech.devinhouse.models.Pedagogo;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.enums.SituacaoMatricula;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class PessoaRepository {
+public class PessoaRepository implements AtendimentoPedagogico {
 
     static List<Pessoa> pessoas = new ArrayList<>();
     int numeroSequencialProfessor = 0;
@@ -62,5 +63,19 @@ public class PessoaRepository {
         for (Pessoa pessoa : pessoas){
             System.out.println(pessoa);
         };
+    }
+
+    @Override
+    public void realizarAtendimento(String codigoPedagogo, String codigoAluno) throws CodigoNaoCadastradoException,
+            AlunoJaEmAtendimentoPedagogicoException {
+        Pessoa pedagogo = consultaCodigo(codigoPedagogo);
+        Pessoa aluno = consultaCodigo(codigoAluno);
+
+        if (((Aluno) aluno).getSituacaoMatricula() == SituacaoMatricula.ATENDIMENTO_PEDAGOGICO)
+            throw new AlunoJaEmAtendimentoPedagogicoException();
+
+        ((Pedagogo) pedagogo).setNumeroAtendimentos();
+        ((Aluno) aluno).setNumeroAtendimentos();
+        ((Aluno) aluno).setSituacaoMatricula(String.valueOf(SituacaoMatricula.ATENDIMENTO_PEDAGOGICO));
     }
 }

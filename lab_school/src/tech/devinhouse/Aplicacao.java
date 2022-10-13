@@ -24,7 +24,7 @@ public class Aplicacao {
                 operacao = display.solicitarOperacao();
                 processar(operacao);
             } catch (OpcaoInvalidaException | EntradaNumerosInvalidaException | DataNascimentoInvalidaException |
-                     CodigoInvalidoException | CodigoNaoCadastradoException e) {
+                     CodigoInvalidoException | CodigoNaoCadastradoException | AlunoJaEmAtendimentoPedagogicoException e) {
                 System.out.println(e.getMessage());
             } catch (ParseException e) {
                 Display.exibirMensagem("Input com formato errado!\n", Cores.RED);
@@ -37,7 +37,7 @@ public class Aplicacao {
     }
 
     private void processar(Operacao operacao) throws ParseException, EntradaNumerosInvalidaException,
-            DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException {
+            DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException, AlunoJaEmAtendimentoPedagogicoException {
         switch (operacao){
             case CADASTRAR_PROFESSOR:
                 Pessoa professor = display.solicitarCadastroProfessor();
@@ -65,6 +65,11 @@ public class Aplicacao {
                 repository.consultar();
                 break;
             case ATENDIMENTO_PEDAGOGICO:
+                String codigoPedagogo = display.solicitarCodigoPedagogo();
+                String codigoAluno = display.solicitarCodigoAluno();
+                repository.realizarAtendimento(codigoPedagogo, codigoAluno);
+                Display.exibirMensagem("Atendimento pedagógico realizado com sucesso!\n", Cores.GREEN);
+                repository.consultar();
                 break;
             case IMPRIMIR_RELATORIO:
                 break;

@@ -2,7 +2,7 @@ package tech.devinhouse.models;
 
 import java.util.Date;
 
-public class Pedagogo extends Pessoa implements AtendimentoPedagogico{
+public class Pedagogo extends Pessoa{
 
     private int numeroAtendimentos;
 
@@ -23,12 +23,8 @@ public class Pedagogo extends Pessoa implements AtendimentoPedagogico{
         return numeroAtendimentos;
     }
 
-    public void setNumeroAtendimentos(int numeroAtendimentos) {
-        this.numeroAtendimentos = numeroAtendimentos;
+    public void setNumeroAtendimentos() {
+        this.numeroAtendimentos ++;
     }
 
-    @Override
-    public void realizarAtendimento(Aluno aluno) {
-        return;
-    }
 }
