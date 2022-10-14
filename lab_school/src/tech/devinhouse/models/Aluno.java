@@ -10,7 +10,6 @@ public class Aluno extends Pessoa{
     private double notaProcessoSeletivo;
     private int numeroAtendimentos;
 
-
     public Aluno(String nome, String telefone, Date dataDeNascimento, String cpf, String codigo, SituacaoMatricula situacaoMatricula, double notaProcessoSeletivo, int numeroAtendimentos) {
         super(nome, telefone, dataDeNascimento, cpf, codigo);
         this.situacaoMatricula = SituacaoMatricula.valueOf(String.valueOf(situacaoMatricula));
@@ -29,6 +28,11 @@ public class Aluno extends Pessoa{
     public String toStringRelatorio() {
         return super.toStringRelatorio() +
                 "Nota do Processo Seletivo = " + notaProcessoSeletivo + "\n" +
+                "Número de Atendimentos = " + numeroAtendimentos + "\n";
+    }
+
+    public String toStringAtendimento() {
+        return super.toStringRelatorio() +
                 "Número de Atendimentos = " + numeroAtendimentos + "\n";
     }
 

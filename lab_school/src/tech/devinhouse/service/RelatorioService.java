@@ -11,8 +11,9 @@ import tech.devinhouse.models.enums.SituacaoMatricula;
 import tech.devinhouse.models.enums.TipoPessoa;
 import tech.devinhouse.repository.PessoaRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RelatorioService {
 
@@ -100,6 +101,22 @@ public class RelatorioService {
             List<Pessoa> professores = pessoas.stream().filter(p -> p instanceof Professor).toList();
             for (Pessoa professor : professores) System.out.println("\n" + professor.toStringRelatorio());
         }
+        Display.exibirMensagem("***************************************************************", Cores.RESET);
+    }
+
+    public void exibeRelatorioAlunosComMaisAtendimentoPedagogico() {
+        List<Pessoa> pessoas = PessoaRepository.getPessoas();
+        List<Aluno> alunos = new ArrayList<>();
+        pessoas.stream().forEach(p -> {
+            if (p instanceof Aluno) {
+                alunos.add((Aluno)p);
+            }
+        });
+        Collections.sort(alunos, (Aluno o1, Aluno o2) -> Integer.compare(o2.getNumeroAtendimentos(), o1.getNumeroAtendimentos()));
+
+        Display.exibirMensagem("***************************************************************\n", Cores.RESET);
+        Display.exibirMensagem(String.format("    RELATÓRIO DE ALUNOS COM MAIS ATENDIMENTOS PEDAGÓGICOS\n"), Cores.RESET);
+        for (Aluno aluno : alunos) System.out.println("\n" + aluno.toStringAtendimento());
         Display.exibirMensagem("***************************************************************", Cores.RESET);
     }
 }

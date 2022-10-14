@@ -3,10 +3,7 @@ package tech.devinhouse;
 import tech.devinhouse.cli.Cores;
 import tech.devinhouse.cli.Display;
 import tech.devinhouse.exception.*;
-import tech.devinhouse.models.Aluno;
-import tech.devinhouse.models.Pedagogo;
 import tech.devinhouse.models.Pessoa;
-import tech.devinhouse.models.Professor;
 import tech.devinhouse.models.enums.*;
 import tech.devinhouse.service.RelatorioService;
 import tech.devinhouse.service.enums.Relatorio;
@@ -99,6 +96,7 @@ public class Aplicacao {
                 relatorioService.exibeRelatorioProfessor(experiencia);
                 break;
             case RELATORIO_ALUNOS_MAIS_ATENDIMENTOS_PEDAGOGICOS:
+                relatorioService.exibeRelatorioAlunosComMaisAtendimentoPedagogico();
                 break;
             case RELATORIO_PEDAGOGOS_MAIS_ATENDIMENTOS_PEDAGOGICOS:
                 break;
