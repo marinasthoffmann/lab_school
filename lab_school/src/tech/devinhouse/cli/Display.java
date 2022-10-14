@@ -1,9 +1,6 @@
 package tech.devinhouse.cli;
 
-import tech.devinhouse.exception.CodigoInvalidoException;
-import tech.devinhouse.exception.DataNascimentoInvalidaException;
-import tech.devinhouse.exception.EntradaNumerosInvalidaException;
-import tech.devinhouse.exception.OpcaoInvalidaException;
+import tech.devinhouse.exception.*;
 import tech.devinhouse.factory.IPessoaFactory;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.enums.*;
@@ -56,13 +53,13 @@ public class Display {
 
         return Operacao.obterPeloCodigo(codigoOperacao);
     }
-    private static int verificarInput(int input ,int limite) throws OpcaoInvalidaException {
-        int resposta = Utils.tryParseInt(String.valueOf(input));
+    private static int verificarInput(String input ,int limite) throws OpcaoInvalidaException {
+        int resposta = Utils.tryParseInt(input);
 
-        if (resposta == 0 || input > limite || input <= 0)
+        if (resposta == 0 || resposta > limite || resposta <= 0)
             throw new OpcaoInvalidaException();
 
-        return input;
+        return resposta;
     }
 
     public static void exibirMensagem(String mensagem, String cor) {
@@ -94,7 +91,7 @@ public class Display {
     }
 
     public Pessoa solicitarCadastroProfessor() throws ParseException, EntradaNumerosInvalidaException,
-            DataNascimentoInvalidaException, OpcaoInvalidaException {
+            DataNascimentoInvalidaException, OpcaoInvalidaException, CPFinvalidoException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String nome = scanner.nextLine();
@@ -107,27 +104,29 @@ public class Display {
         String dataNascimentoInput = scanner.nextLine();
         Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
-        exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.PROFESSOR), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o cpf do %s (somente números): ", TipoPessoa.PROFESSOR), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        Utils.validaCPF(cpf);
         if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String [] formacoesAcademicas = {"Graduação incompleta", "Graduação completa", "Mestrado", "Doutorado"};
         exibirMensagemOpcoes("Digite a formação acadêmica: ", List.of(formacoesAcademicas));
-        int formacaoAcademicaInput = scanner.nextInt();
-        verificarInput(formacaoAcademicaInput, formacoesAcademicas.length);
-        FormacaoAcademica formacaoAcademica = FormacaoAcademica.obterPeloCodigo(formacaoAcademicaInput);
+        String formacaoAcademicaInput = scanner.nextLine();
+        int opcaoFormacaoAcademica = verificarInput(formacaoAcademicaInput, formacoesAcademicas.length);
+        FormacaoAcademica formacaoAcademica = FormacaoAcademica.obterPeloCodigo(opcaoFormacaoAcademica);
 
         String [] experienciasDesenvolvimento = {"Front-end", "Back-end", "Full-stack"};
         exibirMensagemOpcoes("Digite a experiência de desenvolvimento: ", List.of(experienciasDesenvolvimento));
-        int experienciaDesenvolvimentoInput = scanner.nextInt();
-        verificarInput(experienciaDesenvolvimentoInput, experienciasDesenvolvimento.length);
-        ExperienciaDesenvolvimento experienciaDesenvolvimento = ExperienciaDesenvolvimento.obterPeloCodigo(experienciaDesenvolvimentoInput);
+        String experienciaDesenvolvimentoInput = scanner.nextLine();
+        int opcaoExperienciaDesenvolvimento = verificarInput(experienciaDesenvolvimentoInput, experienciasDesenvolvimento.length);
+        ExperienciaDesenvolvimento experienciaDesenvolvimento = ExperienciaDesenvolvimento.obterPeloCodigo(opcaoExperienciaDesenvolvimento);
 
         String [] estados = {"Ativo", "Inativo"};
         exibirMensagemOpcoes("Digite o estado do professor: ", List.of(estados));
-        int estadosInput = scanner.nextInt();
-        EstadoProfessor estadoProfessor = EstadoProfessor.obterPeloCodigo(estadosInput);
-        verificarInput(estadosInput, estados.length);
+        String estadosInput = scanner.nextLine();
+        int opcaoEstado = verificarInput(estadosInput, estados.length);
+        EstadoProfessor estadoProfessor = EstadoProfessor.obterPeloCodigo(opcaoEstado);
+
 
         String codigo = repository.gerarCodigoProfessor();
 
@@ -135,7 +134,7 @@ public class Display {
     }
 
     public Pessoa solicitarCadastroAluno() throws ParseException, EntradaNumerosInvalidaException,
-            DataNascimentoInvalidaException, OpcaoInvalidaException {
+            DataNascimentoInvalidaException, OpcaoInvalidaException, CPFinvalidoException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
         String nome = scanner.nextLine();
@@ -148,24 +147,26 @@ public class Display {
         String dataNascimentoInput = scanner.nextLine();
         Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
-        exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o cpf do %s (somente números): ", TipoPessoa.ALUNO), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        Utils.validaCPF(cpf);
         if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String codigo = repository.gerarCodigoAluno();
 
         SituacaoMatricula situacaoMatricula = solicitaSituacaoAluno();
 
-        exibirMensagem(String.format("Digite a nota do processo seletivo do %s: ", TipoPessoa.ALUNO), Cores.YELLOW);
-        Double nota = scanner.nextDouble();
-        if (Utils.tryParseDouble(nota) == 0) throw new EntradaNumerosInvalidaException(cpf);
+        exibirMensagem(String.format("Digite a nota do processo seletivo do %s (somente números): ", TipoPessoa.ALUNO), Cores.YELLOW);
+        String notaInput = scanner.nextLine();
+        if (Utils.tryParseDouble(notaInput) == 0) throw new EntradaNumerosInvalidaException("nota");
+        double nota = Utils.tryParseDouble(notaInput);
 
         int numeroAtendimentos = 0;
 
         return IPessoaFactory.cadastrarAluno(nome, telefone, dataNascimento, cpf, codigo, situacaoMatricula, nota, numeroAtendimentos);
     }
 
-    public Pessoa solicitarCadastroPedagogo() throws ParseException, EntradaNumerosInvalidaException, DataNascimentoInvalidaException {
+    public Pessoa solicitarCadastroPedagogo() throws ParseException, EntradaNumerosInvalidaException, DataNascimentoInvalidaException, CPFinvalidoException {
         Scanner scanner = new Scanner(System.in);
         exibirMensagem(String.format("Digite o nome do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String nome = scanner.nextLine();
@@ -178,8 +179,9 @@ public class Display {
         String dataNascimentoInput = scanner.nextLine();
         Date dataNascimento = Utils.formatarData(dataNascimentoInput);
 
-        exibirMensagem(String.format("Digite o cpf do %s: ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
+        exibirMensagem(String.format("Digite o cpf do %s (somente números): ", TipoPessoa.PEDAGOGO), Cores.YELLOW);
         String cpf = scanner.nextLine();
+        Utils.validaCPF(cpf);
         if (Utils.tryParseLong(cpf) == 0) throw new EntradaNumerosInvalidaException("cpf");
 
         String codigo = repository.gerarCodigoPedagogo();
@@ -217,13 +219,24 @@ public class Display {
 
     public SituacaoMatricula solicitaSituacaoAluno() throws OpcaoInvalidaException {
         Scanner scanner = new Scanner(System.in);
+        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
+        exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
+
+        String situacaoMatriculaInput = scanner.nextLine();
+        int opcaoSituacaoMatricula = verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
+
+        return SituacaoMatricula.obterPeloCodigo(opcaoSituacaoMatricula);
+    }
+
+    public SituacaoMatricula solicitaSituacaoAlunoRelatorio() throws OpcaoInvalidaException {
+        Scanner scanner = new Scanner(System.in);
         String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo", "Todos"};
         exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
 
-        int situacaoMatriculaInput = scanner.nextInt();
-        verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
+        String situacaoMatriculaInput = scanner.nextLine();
+        int opcaoSituacaoMatricula = verificarInput(situacaoMatriculaInput, situacoesMatricula.length);
 
-        return SituacaoMatricula.obterPeloCodigo(situacaoMatriculaInput);
+        return SituacaoMatricula.obterPeloCodigo(opcaoSituacaoMatricula);
     }
 
     public Relatorio solicitarTipoRelatorio() throws OpcaoInvalidaException {

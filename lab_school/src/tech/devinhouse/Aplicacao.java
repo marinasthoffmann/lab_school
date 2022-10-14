@@ -28,7 +28,8 @@ public class Aplicacao {
                 operacao = display.solicitarOperacao();
                 processar(operacao);
             } catch (OpcaoInvalidaException | EntradaNumerosInvalidaException | DataNascimentoInvalidaException |
-                     CodigoInvalidoException | CodigoNaoCadastradoException | AlunoJaEmAtendimentoPedagogicoException e) {
+                     CodigoInvalidoException | CodigoNaoCadastradoException | AlunoJaEmAtendimentoPedagogicoException |
+                     CPFinvalidoException e) {
                 System.out.println(e.getMessage());
             } catch (ParseException e) {
                 Display.exibirMensagem("Input com formato errado!\n", Cores.RED);
@@ -41,43 +42,39 @@ public class Aplicacao {
     }
 
     private void processar(Operacao operacao) throws ParseException, EntradaNumerosInvalidaException,
-            DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException, AlunoJaEmAtendimentoPedagogicoException {
+            DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException,
+            AlunoJaEmAtendimentoPedagogicoException, CPFinvalidoException {
         switch (operacao) {
             case CADASTRAR_PROFESSOR -> {
                 Pessoa professor = display.solicitarCadastroProfessor();
                 repository.inserir(professor);
                 Display.exibirMensagem("Professor cadastrado com sucesso!", Cores.GREEN);
-                repository.consultar();
             }
             case CADASTRAR_ALUNO -> {
                 Pessoa aluno = display.solicitarCadastroAluno();
                 repository.inserir(aluno);
                 Display.exibirMensagem("Aluno cadastrado com sucesso!", Cores.GREEN);
-                repository.consultar();
             }
             case CADASTRAR_PEDAGOGO -> {
                 Pessoa pedagogo = display.solicitarCadastroPedagogo();
                 repository.inserir(pedagogo);
                 Display.exibirMensagem("Pedagogo cadastrado com sucesso!", Cores.GREEN);
-                repository.consultar();
             }
             case ATUALIZAR_SITUACAO -> {
                 String codigo = display.solicitarCodigoAluno();
                 SituacaoMatricula situacaoMatricula = display.solicitaSituacaoAluno();
                 repository.atualizaSituacaoMatricula(codigo, situacaoMatricula);
                 Display.exibirMensagem("Situação da matrícula do aluno atualizada com sucesso!\n", Cores.GREEN);
-                repository.consultar();
             }
             case ATENDIMENTO_PEDAGOGICO -> {
                 String codigoPedagogo = display.solicitarCodigoPedagogo();
                 String codigoAluno = display.solicitarCodigoAluno();
                 repository.realizarAtendimento(codigoPedagogo, codigoAluno);
                 Display.exibirMensagem("Atendimento pedagógico realizado com sucesso!\n", Cores.GREEN);
-                repository.consultar();
             }
             case IMPRIMIR_RELATORIO -> {
-                Relatorio relatorio = display.solicitarTipoRelatorio();
-                processar(relatorio);
+                    Relatorio relatorio = display.solicitarTipoRelatorio();
+                    processar(relatorio);
             }
             case ENCERRAR -> {
             }
@@ -90,7 +87,7 @@ public class Aplicacao {
                 relatorioService.exibeListagem(tipo);
             }
             case RELATORIO_ALUNOS -> {
-                SituacaoMatricula situacao = display.solicitaSituacaoAluno();
+                SituacaoMatricula situacao = display.solicitaSituacaoAlunoRelatorio();
                 relatorioService.exibeRelatorioAluno(situacao);
             }
             case RELATORIO_PROFESSORES -> {

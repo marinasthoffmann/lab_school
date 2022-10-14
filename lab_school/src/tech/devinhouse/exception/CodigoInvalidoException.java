@@ -6,7 +6,7 @@ public class CodigoInvalidoException extends Exception{
 
     public CodigoInvalidoException() {
 
-        super(Cores.RED + "\nCódigo do aluno inválido! Deve seguir o padrão ALXXXXX." + Cores.RESET);
+        super(Cores.RED + "\nCódigo inválido! Deve seguir o padrão ALXXXXX para alunos ou PEXXXXX para pedagogos." + Cores.RESET);
 
     }
 }
