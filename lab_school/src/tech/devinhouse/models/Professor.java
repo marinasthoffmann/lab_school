@@ -36,27 +36,8 @@ public class Professor extends Pessoa{
                 "Estado = " + estado + "\n";
     }
 
-    public FormacaoAcademica getFormacaoAcademica() {
-        return formacaoAcademica;
-    }
-
-    public void setFormacaoAcademica(String formacaoAcademica) {
-        this.formacaoAcademica = FormacaoAcademica.valueOf(formacaoAcademica);
-    }
-
     public ExperienciaDesenvolvimento getExperienciaDesenvolvimento() {
         return experienciaDesenvolvimento;
     }
 
-    public void setExperienciaDesenvolvimento(String experienciaDesenvolvimento) {
-        this.experienciaDesenvolvimento = ExperienciaDesenvolvimento.valueOf(experienciaDesenvolvimento);
-    }
-
-    public EstadoProfessor getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = EstadoProfessor.valueOf(estado);
-    }
 }

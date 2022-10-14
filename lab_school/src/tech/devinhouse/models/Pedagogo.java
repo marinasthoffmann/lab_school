@@ -19,6 +19,11 @@ public class Pedagogo extends Pessoa{
                 "Número de atendimentos = " + numeroAtendimentos;
     }
 
+    public String toStringAtendimento() {
+        return super.toStringRelatorio() +
+                "Número de Atendimentos = " + numeroAtendimentos + "\n";
+    }
+
     public int getNumeroAtendimentos() {
         return numeroAtendimentos;
     }

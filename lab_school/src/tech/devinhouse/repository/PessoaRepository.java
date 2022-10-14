@@ -24,27 +24,6 @@ public class PessoaRepository implements AtendimentoPedagogicoService {
     int numeroSequencialAluno = 5;
     int numeroSequencialPedagogo = 3;
 
-    public static Pessoa consultaCodigo(String codigo) throws CodigoNaoCadastradoException {
-        Pessoa pessoaSelecionada = null;
-
-        for (Pessoa pessoa : pessoas){
-            if(Objects.equals(pessoa.getCodigo(), codigo)){
-                pessoaSelecionada = pessoa;
-            }
-        }
-
-        if (pessoaSelecionada == null){
-            throw new CodigoNaoCadastradoException();
-        }
-
-        return pessoaSelecionada;
-    }
-
-    public static void atualizaSituacaoMatricula(String codigo, SituacaoMatricula situacaoMatricula) throws CodigoNaoCadastradoException {
-        Aluno pessoa = (Aluno) PessoaRepository.consultaCodigo(codigo);
-        pessoa.setSituacaoMatricula(String.valueOf(situacaoMatricula));
-    }
-
 
     public String gerarCodigoProfessor(){
         numeroSequencialProfessor ++;
@@ -61,6 +40,22 @@ public class PessoaRepository implements AtendimentoPedagogicoService {
         return String.format("PE%05d", numeroSequencialPedagogo);
     }
 
+    public static Pessoa consultaCodigo(String codigo) throws CodigoNaoCadastradoException {
+        Pessoa pessoaSelecionada = null;
+
+        for (Pessoa pessoa : pessoas){
+            if(Objects.equals(pessoa.getCodigo(), codigo)){
+                pessoaSelecionada = pessoa;
+            }
+        }
+
+        if (pessoaSelecionada == null){
+            throw new CodigoNaoCadastradoException();
+        }
+
+        return pessoaSelecionada;
+    }
+
     public void inserir(Pessoa pessoa){
         pessoas.add(pessoa);
 
@@ -69,6 +64,11 @@ public class PessoaRepository implements AtendimentoPedagogicoService {
         for (Pessoa pessoa : pessoas){
             System.out.println(pessoa);
         };
+    }
+
+    public static void atualizaSituacaoMatricula(String codigo, SituacaoMatricula situacaoMatricula) throws CodigoNaoCadastradoException {
+        Aluno pessoa = (Aluno) PessoaRepository.consultaCodigo(codigo);
+        pessoa.setSituacaoMatricula(String.valueOf(situacaoMatricula));
     }
 
     @Override

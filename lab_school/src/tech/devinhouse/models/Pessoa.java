@@ -4,10 +4,10 @@ import java.util.Date;
 
 public abstract class Pessoa{
 
-    private String nome;
-    private String telefone;
-    private Date dataDeNascimento;
-    private String cpf;
+    private final String nome;
+    private final String telefone;
+    private final Date dataDeNascimento;
+    private final String cpf;
     private String codigo;
 
 
@@ -35,38 +35,6 @@ public abstract class Pessoa{
     public String toStringRelatorio() {
         return "Código = " + codigo + "\n" +
                 "Nome = " + nome + '\n';
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getTelefone() {
-        return telefone;
-    }
-
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
-
-    public Date getDataDeNascimento() {
-        return dataDeNascimento;
-    }
-
-    public void setDataDeNascimento(Date dataDeNascimento) {
-        this.dataDeNascimento = dataDeNascimento;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getCodigo() {

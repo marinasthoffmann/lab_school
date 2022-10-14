@@ -119,4 +119,20 @@ public class RelatorioService {
         for (Aluno aluno : alunos) System.out.println("\n" + aluno.toStringAtendimento());
         Display.exibirMensagem("***************************************************************", Cores.RESET);
     }
+
+    public void exibeRelatorioPedagogosComMaisAtendimentoPedagogico() {
+        List<Pessoa> pessoas = PessoaRepository.getPessoas();
+        List<Pedagogo> pedagogos = new ArrayList<>();
+        pessoas.stream().forEach(p -> {
+            if (p instanceof Pedagogo) {
+                pedagogos.add((Pedagogo) p);
+            }
+        });
+        Collections.sort(pedagogos, (Pedagogo o1, Pedagogo o2) -> Integer.compare(o2.getNumeroAtendimentos(), o1.getNumeroAtendimentos()));
+
+        Display.exibirMensagem("***************************************************************\n", Cores.RESET);
+        Display.exibirMensagem(String.format("  RELATÓRIO DE PEDAGOGOS COM MAIS ATENDIMENTOS PEDAGÓGICOS\n"), Cores.RESET);
+        for (Pedagogo pedagogo : pedagogos) System.out.println("\n" + pedagogo.toStringAtendimento());
+        Display.exibirMensagem("***************************************************************", Cores.RESET);
+    }
 }
