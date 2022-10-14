@@ -95,6 +95,8 @@ public class Aplicacao {
                 relatorioService.exibeRelatorioAluno(situacao);
                 break;
             case RELATORIO_PROFESSORES:
+                ExperienciaDesenvolvimento experiencia = display.solicitaExperienciaProfessor();
+                relatorioService.exibeRelatorioProfessor(experiencia);
                 break;
             case RELATORIO_ALUNOS_MAIS_ATENDIMENTOS_PEDAGOGICOS:
                 break;

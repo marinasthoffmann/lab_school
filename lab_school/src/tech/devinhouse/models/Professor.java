@@ -29,6 +29,13 @@ public class Professor extends Pessoa{
                 "Estado = " + estado + "\n";
     }
 
+    public String toStringRelatorio() {
+        return super.toStringRelatorio() +
+                "Formação acadêmica = " + formacaoAcademica + "\n" +
+                "Experiência = " + experienciaDesenvolvimento + "\n" +
+                "Estado = " + estado + "\n";
+    }
+
     public FormacaoAcademica getFormacaoAcademica() {
         return formacaoAcademica;
     }

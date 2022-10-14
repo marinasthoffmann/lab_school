@@ -251,4 +251,16 @@ public class Display {
         }
         return TipoPessoa.obterPeloCodigo(categoria);
     }
+
+    public ExperienciaDesenvolvimento solicitaExperienciaProfessor() throws OpcaoInvalidaException {
+        Scanner scanner = new Scanner(System.in);
+        String [] categorias = {"Front-end", "Back-end", "Full-stack", "Todos"};
+        exibirMensagemOpcoes("Digite a experiência de desenvolvimento do professor: ", List.of(categorias));
+        int categoria = scanner.nextInt();
+
+        if (categoria <= 0 || categoria > TipoPessoa.values().length){
+            throw new OpcaoInvalidaException();
+        }
+        return ExperienciaDesenvolvimento.obterPeloCodigo(categoria);
+    }
 }

@@ -6,6 +6,7 @@ import tech.devinhouse.models.Aluno;
 import tech.devinhouse.models.Pedagogo;
 import tech.devinhouse.models.Pessoa;
 import tech.devinhouse.models.Professor;
+import tech.devinhouse.models.enums.ExperienciaDesenvolvimento;
 import tech.devinhouse.models.enums.SituacaoMatricula;
 import tech.devinhouse.models.enums.TipoPessoa;
 import tech.devinhouse.repository.PessoaRepository;
@@ -67,6 +68,37 @@ public class RelatorioService {
         else{
             List<Pessoa> alunos = pessoas.stream().filter(p -> p instanceof Aluno).toList();
             for (Pessoa aluno : alunos) System.out.println("\n" + aluno.toStringRelatorio());
+        }
+        Display.exibirMensagem("***************************************************************", Cores.RESET);
+    }
+
+    public void exibeRelatorioProfessor(ExperienciaDesenvolvimento experiencia) {
+        Display.exibirMensagem("***************************************************************\n", Cores.RESET);
+        Display.exibirMensagem(String.format("           RELATÓRIO DE PROFESSORES %s\n", experiencia), Cores.RESET);
+
+        List<Pessoa> pessoas = PessoaRepository.getPessoas();
+
+        if(experiencia == ExperienciaDesenvolvimento.FRONT_END){
+            List<Pessoa> fronts = pessoas.stream()
+                    .filter(p -> p instanceof Professor && ((Professor) p).getExperienciaDesenvolvimento() == ExperienciaDesenvolvimento.FRONT_END)
+                    .toList();
+            for (Pessoa front : fronts) System.out.println("\n" + front.toStringRelatorio());
+        }
+        else if(experiencia == ExperienciaDesenvolvimento.BACK_END){
+            List<Pessoa> backs = pessoas.stream()
+                    .filter(p -> p instanceof Professor && ((Professor) p).getExperienciaDesenvolvimento() == ExperienciaDesenvolvimento.BACK_END)
+                    .toList();
+            for (Pessoa back : backs) System.out.println("\n" + back.toStringRelatorio());
+        }
+        else if(experiencia == ExperienciaDesenvolvimento.FULL_STACK){
+            List<Pessoa> fulls = pessoas.stream()
+                    .filter(p -> p instanceof Professor && ((Professor) p).getExperienciaDesenvolvimento() == ExperienciaDesenvolvimento.FULL_STACK)
+                    .toList();
+            for (Pessoa full : fulls) System.out.println("\n" + full.toStringRelatorio());
+        }
+        else{
+            List<Pessoa> professores = pessoas.stream().filter(p -> p instanceof Professor).toList();
+            for (Pessoa professor : professores) System.out.println("\n" + professor.toStringRelatorio());
         }
         Display.exibirMensagem("***************************************************************", Cores.RESET);
     }
