@@ -26,6 +26,11 @@ public class Aluno extends Pessoa{
                 "Nota do Processo Seletivo = " + notaProcessoSeletivo + "\n" +
                 "Número de Atendimentos = " + numeroAtendimentos + "\n";
     }
+    public String toStringRelatorio() {
+        return super.toStringRelatorio() +
+                "Nota do Processo Seletivo = " + notaProcessoSeletivo + "\n" +
+                "Número de Atendimentos = " + numeroAtendimentos + "\n";
+    }
 
     public SituacaoMatricula getSituacaoMatricula() {
         return situacaoMatricula;

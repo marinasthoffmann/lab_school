@@ -91,6 +91,8 @@ public class Aplicacao {
                 relatorioService.exibeListagem(tipo);
                 break;
             case RELATORIO_ALUNOS:
+                SituacaoMatricula situacao = display.solicitaSituacaoAluno();
+                relatorioService.exibeRelatorioAluno(situacao);
                 break;
             case RELATORIO_PROFESSORES:
                 break;

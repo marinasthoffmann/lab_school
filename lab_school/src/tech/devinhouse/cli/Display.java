@@ -217,7 +217,7 @@ public class Display {
 
     public SituacaoMatricula solicitaSituacaoAluno() throws OpcaoInvalidaException {
         Scanner scanner = new Scanner(System.in);
-        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo"};
+        String [] situacoesMatricula = {"Ativo", "Irregular", "Atendimento pedagógico", "Inativo", "Todos"};
         exibirMensagemOpcoes("Digite a situação da matrícula: ", List.of(situacoesMatricula));
 
         int situacaoMatriculaInput = scanner.nextInt();

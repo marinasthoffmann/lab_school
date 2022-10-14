@@ -32,6 +32,11 @@ public abstract class Pessoa{
         return "Código: " + codigo + " | Nome: " + nome + " | CPF: " + cpf;
     }
 
+    public String toStringRelatorio() {
+        return "Código = " + codigo + "\n" +
+                "Nome = " + nome + '\n';
+    }
+
     public String getNome() {
         return nome;
     }

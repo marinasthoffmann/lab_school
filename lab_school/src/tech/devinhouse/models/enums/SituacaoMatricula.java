@@ -5,7 +5,8 @@ public enum SituacaoMatricula {
     ATIVO,
     IRREGULAR,
     ATENDIMENTO_PEDAGOGICO,
-    INATIVO;
+    INATIVO,
+    TODOS;
 
     public static SituacaoMatricula obterPeloCodigo(int codigo) {
         SituacaoMatricula[] situacaoMatriculas = SituacaoMatricula.values();
