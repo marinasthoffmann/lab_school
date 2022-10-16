@@ -8,6 +8,9 @@ import tech.devinhouse.models.enums.*;
 
 import java.util.Date;
 
+/**
+ * <p>Possui métodos estáticos para criar instâncias das classes criadas</p>
+ */
 public interface IPessoaFactory {
 
      static Pessoa cadastrarProfessor(String nome, String telefone, Date dataNascimento, String cpf, String codigo,

@@ -11,6 +11,9 @@ import tech.devinhouse.repository.PessoaRepository;
 
 import java.text.ParseException;
 
+/**
+ * <p>Classe com métodos de execução e processamento das operações do programa</p>
+ */
 public class Aplicacao {
     private final PessoaRepository repository = new PessoaRepository();
     private final Display display = new Display(repository);
@@ -41,6 +44,18 @@ public class Aplicacao {
         }
     }
 
+    /**
+     *<p>Método contendo estrutura lógica para processar operação</p>
+     * @param operacao opção de operação definida pelo usuário
+     * @throws ParseException: Ao tentar converter variaveis
+     * @throws EntradaNumerosInvalidaException: Quando o sistema espera entrada numérica e isso não ocorre
+     * @throws DataNascimentoInvalidaException: No caso de entrada de data de nascimento em formato inválido
+     * @throws OpcaoInvalidaException: Opção indicada pelo usuário não é válida para o menu de seleção
+     * @throws CodigoInvalidoException: Código identificador das classes não foi inserido de forma correta
+     * @throws CodigoNaoCadastradoException: Código identificador das classes ainda não foi cadastrado no sistema
+     * @throws AlunoJaEmAtendimentoPedagogicoException: Ao tentar realizar atendimento pedagógico em aluno que tem situação da matricula como Atendimento Pedagógico
+     * @throws CPFinvalidoException: CPF não possui apenas 11 dígitos
+     */
     private void processar(Operacao operacao) throws ParseException, EntradaNumerosInvalidaException,
             DataNascimentoInvalidaException, OpcaoInvalidaException, CodigoInvalidoException, CodigoNaoCadastradoException,
             AlunoJaEmAtendimentoPedagogicoException, CPFinvalidoException {
@@ -80,6 +95,12 @@ public class Aplicacao {
             }
         }
     }
+
+    /**
+     * <p>Método contendo estrutura lógica para processar relatórios</p>
+     * @param relatorio: opção de relatório selecionada pelo usuário
+     * @throws OpcaoInvalidaException: Opção indicada pelo usuário não é válida para o menu de seleção
+     */
     private void processar(Relatorio relatorio) throws OpcaoInvalidaException {
         switch (relatorio) {
             case LISTAGEM_PESSOAS -> {

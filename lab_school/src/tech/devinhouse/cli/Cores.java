@@ -1,8 +1,10 @@
 package tech.devinhouse.cli;
 
+/**
+ * <p>Classe utilitária para facilitar utilização de cores nos mensagens exibidas.</p>
+ */
 public class Cores {
 
-    // Reset
     public static final String RESET = "\033[0m";  // Text Reset
 
     public static final String RED = "\033[0;31m";     // RED
