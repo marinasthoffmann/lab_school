@@ -19,5 +19,3 @@ Os requisitos funcionais desta aplicação são os seguintes:
 - RF08 - Relatório dos Professores;
 - RF09 - Relatório de Alunos com mais atendimentos pedagógicos;
 - RF10 - Pedagogos com mais atendimentos pedagógicos.
-
-O vídeo solicitado encontra-se no link: https://drive.google.com/drive/folders/1zld4713u85X1uW3z6Jy8tbWAJvlV3OXG?usp=sharing
